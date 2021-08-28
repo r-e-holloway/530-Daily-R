@@ -1,0 +1,27 @@
+---
+title: "August 28 Daily R"
+author: "Ruth Holloway"
+date: "8/28/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+M1<-matrix(1:27, nrow=9, ncol=3, byrow=TRUE)
+colnames
+M1[7,3]
+M1[4,2]
+M1[7,3]+M1[4,2]
+
+colnames(M1)<-c("A", "B", "C")
+
+func<-function(w,x,y,z){
+  M1[w,x]+M1[y,z]
+}
+
+func(7,3,4,2)
+```
+
