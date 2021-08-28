@@ -10,18 +10,17 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r}
-M1<-matrix(1:27, nrow=9, ncol=3, byrow=TRUE)
-colnames
-M1[7,3]
+M1<-matrix(1:27, nrow=9, ncol=3, byrow=TRUE) #create a matrix
+M1[7,3] #index value from matrix
 M1[4,2]
-M1[7,3]+M1[4,2]
+M1[7,3]+M1[4,2] #add indexed values
 
-colnames(M1)<-c("A", "B", "C")
+colnames(M1)<-c("A", "B", "C") #rename columns
 
 func<-function(w,x,y,z){
   M1[w,x]+M1[y,z]
-}
+} #create function to add indexed values of matrix
 
-func(7,3,4,2)
+func(7,3,4,2) #call function
 ```
 
