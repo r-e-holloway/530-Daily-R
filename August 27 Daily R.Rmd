@@ -1,0 +1,23 @@
+---
+title: "August 27 Daily R"
+author: "Ruth Holloway"
+date: "8/27/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+function1<-function(x) {
+  if(sum(x)>0)((sum(x))) else ("error")
+  } #create a function that prints the positive sum of variable or displays an error message
+
+vec<-c(1, -6, 7, -9) #creating two vectors
+vec2<-c(2, 4, 6, 3)
+
+function1(vec) #inputting vectors into function
+function1(vec2)
+```
+

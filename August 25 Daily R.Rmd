@@ -1,0 +1,21 @@
+---
+title: "August 25 Daily R"
+author: "Ruth Holloway"
+date: "8/25/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+data=train #selecting downloaded data on Titanic passengers
+head(train) #view first six lines of data
+titanic<-subset(train, select = (1:3)) #create a subset of the original dataframe that only includes the passenger ID, survival, and class
+titanic #display new dataframe
+titanic2<- rename(titanic, Survived = ...2, Class = ...3) #rename the columns
+titanic2 = titanic2[-1,] #remove the first row of the dataframe because the numeric data begins on line 2
+lm(Survived~Class, data=titanic2) #create a linear model examining the relationship between class and survival
+```
+

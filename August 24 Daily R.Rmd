@@ -1,0 +1,19 @@
+---
+title: "August 24 Daily R"
+author: "Ruth Holloway"
+date: "8/24/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(help="datasets") #browse datasets preloaded into R
+library(datasets) #load datasets
+data=PlantGrowth #select the data on plant growth 
+PlantGrowth #display plant growth data
+boxplot(weight~group, data=PlantGrowth) #visualize data of plant weight compared across treatment groups
+```
+
