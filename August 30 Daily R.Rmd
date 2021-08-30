@@ -1,0 +1,24 @@
+---
+title: "August 30 Daily R"
+author: "Ruth Holloway"
+date: "8/30/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(datasets)
+data=HairEyeColor #load data
+HairEyeColor #show data
+
+HEC<-apply(HairEyeColor, c("Hair","Eye"), sum) #aggregate over sex
+rownames(HEC)[rownames(HEC) == "Brown"] = "Brunette" #rename brown hair column 
+
+HEC<-prop.table(HEC) #show proportions instead of frequency
+HEC<-transform(HEC,Total=rowSums(HEC)) #create column of sum of each row
+HEC
+```
+
