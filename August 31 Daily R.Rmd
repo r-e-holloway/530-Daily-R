@@ -13,10 +13,10 @@ knitr::opts_chunk$set(echo = TRUE)
 HigherEd<-read.csv("highered.csv") #load data from Higher Ed survey of IPUMS 
 HigherEd<-subset(HigherEd, select = (2:4)) #remove respondent ID column
 summary(HigherEd) #summarize data
+lm(SALARY~COMCOLI, data=HigherEd) #make linear model based on relationship between CC attendance and salary
 
 HigherEd<-subset(HigherEd, HigherEd$SALARY != 9999999 & HigherEd$SALARY != 9999998) #remove rows where salary is equal to 9999998 or 9999999
 summary(HigherEd) #summarize (crudely) trimmed data: I attempted to use the trim and winsorize functions, but to no avail
-
-lm(SALARY~COMCOLI, data=HigherEd) #create linear function of data
+lm(SALARY~COMCOLI, data=HigherEd) #create linear model on trimmed data
 ```
 
