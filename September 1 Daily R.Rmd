@@ -1,0 +1,31 @@
+---
+title: "September 1 Daily R"
+author: "Ruth Holloway"
+date: "9/1/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+Inequality<-subset(WID_data, select = (-1)) #Remove first column from data
+Inequality<- rename(Inequality, "Year" = ...2, "Ghana" = ...3, "Ethiopia" = ...4, "SA" = ...5) #rename columns
+Inequality #show data
+
+#generate linear models for relationship between household income and year for each country
+lm(Ghana~Year, data=Inequality, na.rm=TRUE) 
+lm(Ethiopia~Year, data=Inequality, na.rm=TRUE)
+lm(SA~Year, data=Inequality, na.rm=TRUE)
+
+#plot data and lines of best fit; I followed the instructions found at the url referenced after this chunk
+ggplot(Inequality) + 
+  geom_jitter(aes(Year, Ghana), colour="blue") + geom_smooth(aes(Year, Ghana), method=lm, se=FALSE) +
+  geom_jitter(aes(Year, Ethiopia), colour="green") + geom_smooth(aes(Year, Ethiopia), method=lm, se=FALSE) +
+  geom_jitter(aes(Year, SA), colour="red") + geom_smooth(aes(Year, SA), method=lm, se=FALSE) +
+  labs(x = "Year", y = "Household Income")
+```
+
+#References
+https://stackoverflow.com/questions/25752909/multiple-ggplot-linear-regression-lines
