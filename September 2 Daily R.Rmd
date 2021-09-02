@@ -1,0 +1,37 @@
+---
+title: "September 2 Daily R"
+author: "Ruth Holloway"
+date: "9/2/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+hatecrimes #look at imported data on hate crimes by state in 2013 as reported by the FBI
+hatecrimes<-subset(hatecrimes, select = (1:7)) #create subset of data
+hatecrimes<-subset(hatecrimes, select= (-2)) #remove column specifying community unit (ie city, county, etc)
+hatecrimes<-subset(hatecrimes, select= (-2))#remove column differentiating cities
+hatecrimes<-subset(hatecrimes, select= (-4)) #remove column on sexual orientation (certainly there's an easier way to do this, I just couldn't find a solution on substack and playing around with it didn't work)
+
+hatecrimes<- aggregate(cbind(hatecrimes$Race, hatecrimes$Religion, hatecrimes$Ethnicity), by=list(State=hatecrimes$State), FUN=sum) #aggregate data by state; I learned how to do this at the link below
+hatecrimes<- rename(hatecrimes, Race = V1, Religion = V2, Ethnicity = V3) #rename columns
+hatecrimes<-head(hatecrimes) #subset data so it's easier to analyze and visualize
+
+lm(Race~State, data=hatecrimes) #create linear model of relationship between racial hate crimes and state
+ggplot(hatecrimes) + 
+  geom_jitter(aes(State, Race), colour="blue") + geom_smooth(aes(State, Race), method=lm, se=FALSE) +
+  geom_jitter(aes(State, Religion), colour="green") + geom_smooth(aes(State, Religion), method=lm, se=FALSE) +
+  geom_jitter(aes(State, Ethnicity), colour="red") + geom_smooth(aes(State, Ethnicity), method=lm, se=FALSE) +
+  labs(x = "State", y = "Hate Crime")
+  #visualize data in order to compare occurrences of hate crimes by race, religion, and ethnicity across states
+
+```
+
+Something to note is that these metrics aren't adjusted for population; furthermore, some states do not differentiate between hate crimes and crimes of the same nature targeting an individual based on a demographic quality, such as race, ethnicity, or religion. 
+
+#References
+https://stackoverflow.com/questions/1660124/how-to-sum-a-variable-by-group
+https://github.com/emorisse/FBI-Hate-Crime-Statistics/blob/master/2013/table13.csv
