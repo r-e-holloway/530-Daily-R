@@ -1,0 +1,30 @@
+---
+title: "September 3 Daily R"
+author: "Ruth Holloway"
+date: "9/3/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+Olympics #look at data
+Olympics<- rename(Olympics, "Team" = "Team/NOC", "RBT" = "Rank by Total") #rename columns with multiple words
+OlympicsAlpha <- Olympics[order(Olympics$Team),] #reorder rows alphabetically
+
+#change character to numeric values: this failed
+transform(OlympicsAlpha, Gold= as.numeric(Gold),
+          Silver= as.numeric(Silver),
+          Bronze= as.numeric(Bronze),
+          Total= as.numeric(Total),
+          RBT= as.numeric(RBT))
+
+
+#split data into halves, organized alphabetically
+AI<-OlympicsAlpha[c(1:44), c(1:7)]
+JZ<-OlympicsAlpha[c(45:93), c(1:7)]
+
+```
+I was unable to change the character values (the numbers in my data set) to get R to recognize them as numeric, so I will not be doing any analysis of the data today. I'll try again with this dataset tomorrow.
