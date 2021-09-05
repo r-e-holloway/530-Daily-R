@@ -1,0 +1,33 @@
+---
+title: "September 5 Daily R"
+author: "Ruth Holloway"
+date: "9/5/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+Olympics #look at data
+Olympics<- rename(Olympics, "Team" = "Team/NOC", "RBT" = "Rank by Total") #rename columns with multiple words
+OlympicsAlpha <- Olympics[order(Olympics$Team),] #reorder rows alphabetically
+
+#split data into halves, organized alphabetically
+AI<-OlympicsAlpha[c(1:44), c(1:7)]
+JZ<-OlympicsAlpha[c(45:93), c(1:7)]
+
+#convert to numeric instead of character matrix
+AI<-sapply(AI, as.numeric) 
+JZ<-sapply(JZ, as.numeric)
+
+#convert matrices to dataframes
+A_I<-as.data.frame(AI)
+J_Z<-as.data.frame(JZ)
+
+#make linear models examining relationship between rank and gold medals won
+AIfunc<-lm(Rank~Gold, data=A_I)
+JZfunc<-lm(Rank~Gold, data=J_Z)
+```
+I wanted to learn how to make a table and compare the average number of medals won by place in the alphabet, but decided to go a different route for today because it took me so long to figure out how to format my data. I'll look at tables next time.
