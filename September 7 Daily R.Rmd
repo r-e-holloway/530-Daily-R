@@ -1,0 +1,47 @@
+---
+title: "September 7 Daily R"
+author: "Ruth Holloway"
+date: "9/7/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+#load data
+library(readxl)
+Olympics <- read_excel("~/Downloads/archive/Olympics.xlsx")
+View(Olympics)
+
+Olympics #look at data
+Olympics<- rename(Olympics, "Team" = "Team/NOC", "RBT" = "Rank by Total") #rename columns with multiple words
+OlympicsAlpha <- Olympics[order(Olympics$Team),] #reorder rows alphabetically
+
+#split data into halves, organized alphabetically
+AI<-OlympicsAlpha[c(1:44), c(1:7)]
+JZ<-OlympicsAlpha[c(45:93), c(1:7)]
+
+#convert to numeric instead of character matrix
+AI<-sapply(AI, as.numeric) 
+JZ<-sapply(JZ, as.numeric)
+
+#assign means of columns to new variables (surely there's an easier way to do this)
+Atotal<-mean(AI [,"Total"])
+Jtotal<-mean(JZ [,"Total"])
+Agold<-mean(AI[,"Gold"])
+Jgold<-mean(JZ[,"Gold"])
+Asilv<-mean(AI[,"Silver"])
+Jsilv<-mean(JZ[,"Silver"])
+Abronze<-mean(AI[,"Bronze"])
+Jbronze<-mean(JZ[,"Bronze"])
+
+#make a table comparing the mean medal counts of countries with names A-I and J-Z
+compare<-matrix(c(Atotal, Agold, Asilv, Abronze, Jtotal, Jgold, Jsilv, Jbronze), ncol=2)
+colnames(compare)<-c("A-I", "J-Z")
+rownames(compare)<-c("Total Medals", "Gold", "Silver", "Bronze")
+compare.table<-as.table(compare)
+compare.table
+```
+
