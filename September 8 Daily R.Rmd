@@ -1,0 +1,34 @@
+---
+title: "September 8 Daily R"
+author: "Ruth Holloway"
+date: "9/8/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+hatecrimes<-subset(hatecrimes, select = (1:7)) #create subset of data
+hatecrimes<-subset(hatecrimes, select= (-2)) #remove column specifying community unit (ie city, county, etc)
+hatecrimes<-subset(hatecrimes, select= (-2))#remove column differentiating cities
+
+hatecrimes<- aggregate(cbind(hatecrimes$Race, hatecrimes$Religion, hatecrimes$Ethnicity), by=list(State=hatecrimes$State), FUN=sum) #aggregate data by state
+hatecrimes<- rename(hatecrimes, Race = V1, Religion = V2, Ethnicity = V3) #rename columns
+
+HateCrimes<-subset(hatecrimes, select=(-1)) #remove column showing labels as data
+
+TotalByState<-rowSums(HateCrimes) #sum total hate crimes by state and store them in a variable
+TotalCrimes<-colSums(HateCrimes) #sum total hate crimes by type
+
+HateCrimes$Total<-TotalByState #add column of total hate crimes by state
+HateCrime<-rbind(HateCrimes,TotalCrimes) #add row of total hate crimes by type
+
+#label rows
+rownames(HateCrime)<-c("Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming", "Total")
+
+HateCrime #show data
+
+```
+
