@@ -1,0 +1,38 @@
+---
+title: "September 9 Daily R"
+author: "Ruth Holloway"
+date: "9/9/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+#load data
+library(readr)
+hatecrimes <- read_csv("hatecrimes.csv")
+View(hatecrimes)
+
+hatecrimes<-subset(hatecrimes, select = (1:7)) #create subset of data
+hatecrimes<-subset(hatecrimes, select= (-2)) #remove column specifying community unit (ie city, county, etc)
+hatecrimes<-subset(hatecrimes, select= (-2))#remove column differentiating cities
+
+hatecrimes<- aggregate(cbind(hatecrimes$Race, hatecrimes$Religion, hatecrimes$Ethnicity), by=list(State=hatecrimes$State), FUN=sum) #aggregate data by state
+hatecrimes<- rename(hatecrimes, Race = V1, Religion = V2, Ethnicity = V3) #rename columns
+
+nostate<-subset(hatecrimes, select=(-1))
+
+TotalByState<-rowSums(nostate) #sum total hate crimes by state and store them in a variable
+hatecrimes$Total<-TotalByState #add column of total hate crimes by state
+
+hatecrimes #show data
+summary(hatecrimes) #summarize data
+
+FirstSix<-head(hatecrimes)
+boxplot(Total~State, data=FirstSix)
+
+hatecrimes%>%group_by(State)%>%mutate(Percentage=paste0(round(Total/sum(Total)*100,2),"%")) #I'm trying to show the percentages of hate crimes for which each state is responsible, but it's not working :(
+```
+I've tried out a bunch of methods that I found in R textbooks and StackOverflow but the percentage column won't work how I want it to! I'll come back to that problem tomorrow. In the meantime, I've just put together a really simple visual representation of total hate crimes reported by state. As I said the last time I worked with this data, we have to bear in mind each state's policy on hate crimes before making assumptions about what the raw data means for minority populations in a given state.
