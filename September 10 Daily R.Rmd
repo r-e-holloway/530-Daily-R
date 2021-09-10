@@ -30,6 +30,7 @@ hatecrimes<-rbind(hatecrimes,TotalCrimes) #add row of total hate crimes by type
 
 #Create percent column to represent percentage of total hate crimes by state
 hatecrimes$Percent <- (hatecrimes$Total / 1032)*100 # 1032 = total number hate crimes
+
 ```
 
 
