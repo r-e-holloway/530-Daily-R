@@ -1,0 +1,35 @@
+---
+title: "September 10 Daily R"
+author: "Ruth Holloway"
+date: "9/10/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(readr)
+hatecrimes <- read_csv("hatecrimes.csv")
+View(hatecrimes)
+
+hatecrimes<-subset(hatecrimes, select = (1:7)) #create subset of data
+hatecrimes<-subset(hatecrimes, select= (-2)) #remove column specifying community unit (ie city, county, etc)
+hatecrimes<-subset(hatecrimes, select= (-2))#remove column differentiating cities
+
+library(dplyr)
+hatecrimes<- aggregate(cbind(hatecrimes$Race, hatecrimes$Religion, hatecrimes$Ethnicity), by=list(State=hatecrimes$State), FUN=sum) #aggregate data by state
+hatecrimes<- rename(hatecrimes, Race = V1, Religion = V2, Ethnicity = V3) #rename columns
+
+TotalByState<-rowSums(hatecrimes) #sum total hate crimes by state and store them in a variable
+TotalCrimes<-colSums(hatecrimes) #sum total hate crimes by type
+
+hatecrimes$Total<-TotalByState #add column of total hate crimes by state
+hatecrimes<-rbind(hatecrimes,TotalCrimes) #add row of total hate crimes by type
+
+#Create percent column to represent percentage of total hate crimes by state
+hatecrimes$Percent <- (hatecrimes$Total / 1032)*100 # 1032 = total number hate crimes
+```
+
+
