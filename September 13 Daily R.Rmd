@@ -1,0 +1,31 @@
+---
+title: "September 13 Daily R"
+author: "Ruth Holloway"
+date: "9/13/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+HigherEd<-read.csv("highered.csv") #load data from Higher Ed survey of IPUMS 
+HigherEd<-subset(HigherEd, select = (2:4)) #remove respondent ID column
+HigherEd<-subset(HigherEd, select = (2:3)) #remove survey ID column
+
+#load packages
+library(dplyr)
+library(robustHD)
+
+#There are some big outliers in this data. Last time I worked with it, I just removed the outliers, but this time I'm going to weight the values by winsorizing the data.
+WinSalary<-winsorize(HigherEd$SALARY) #winsorize salary data
+HigherEd$Salary<-WinSalary #create new column with winsorized salary values
+
+BadTrim<-subset(HigherEd, HigherEd$SALARY != 9999999 & HigherEd$SALARY != 9999998) #remove rows where salary is equal to 9999998 or 9999999
+
+lm(WinSalary~COMCOLI, data=HigherEd) #create linear model examining relationship between winsorized salary and community college attendance
+lm(SALARY~COMCOLI, data=HigherEd) #look at relationship between unadjusted salary and CC attendance
+lm(SALARY~COMCOLI, data=BadTrim) #here are the results from my old trimming method—totally different results
+```
+
