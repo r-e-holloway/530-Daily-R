@@ -1,0 +1,39 @@
+---
+title: "September 14 Daily R"
+author: "Ruth Holloway"
+date: "9/14/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+#load package and read in data
+library(readxl)
+Hungary_MSzMP_Politburo_1947_90 <- read_excel("Data/Hungary - MSzMP Politburo - 1947-90.xlsx")
+View(Hungary_MSzMP_Politburo_1947_90)
+
+#create subset of data with variables of interest
+Hungary <- Hungary_MSzMP_Politburo_1947_90[, c('ELITE_FEMALE','ELITE_EXITTYPE', 'ELITE_OCCUPATION')]
+Hungary
+
+library(dplyr)
+
+#What I wanted to do here was eliminate all rows except for those that were coded as female. However, I didn't find a way to do that yet. What this does is remove all rows with an occupation that doesn't appear in a female-coded row. I'll fix it tomorrow.
+ind <- with(Hungary, tapply(ELITE_FEMALE, ELITE_OCCUPATION, sum))
+Hungary[Hungary$ELITE_OCCUPATION %in% names(ind)[ind!=0], ]
+```
+References:
+https://stackoverflow.com/questions/20808724/how-to-select-rows-according-to-column-value-conditions
+@data{DVN/QZ9BSA_2019,
+author = {Matthews, Austin S.},
+publisher = {Harvard Dataverse},
+title = {{Authoritarian Ruling Elites Database (ARED)}},
+UNF = {UNF:6:wCE6Fbq4fzjLGf3CGoYYXQ==},
+year = {2019},
+version = {V36},
+doi = {10.7910/DVN/QZ9BSA},
+url = {https://doi.org/10.7910/DVN/QZ9BSA}
+}
