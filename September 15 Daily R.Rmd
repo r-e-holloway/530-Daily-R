@@ -1,0 +1,30 @@
+---
+title: "September 15 Daily R"
+author: "Ruth Holloway"
+date: "9/15/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+#load package and read in data
+library(readxl)
+Hungary_MSzMP_Politburo_1947_90 <- read_excel("Data/Hungary - MSzMP Politburo - 1947-90.xlsx")
+View(Hungary_MSzMP_Politburo_1947_90)
+
+#create subset of data with variables of interest
+Hungary <- Hungary_MSzMP_Politburo_1947_90[, c('ELITE_FEMALE','ELITE_EXITTYPE', 'ELITE_OCCUPATION')]
+Hungary
+
+library(dplyr)
+
+HWomen <- subset(Hungary, ELITE_FEMALE == 1) #Select only women 
+HWomen #Looks like half of the women who served in the Hungarian government between 1947 and 1990 were demoted. 
+
+HDemotion<-subset(Hungary, ELITE_EXITTYPE == "Demotion")
+HDemotion #42 total elites exited their position by demotion. That's a little bit less than half (95 total observations), so it seems like the exit type for women is representative of how Hungarian elites exited their position. That being said, there aren't a lot of female elites so we'd need more observations to be sure.
+```
+
