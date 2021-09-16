@@ -1,0 +1,31 @@
+---
+title: "September 16 Daily R"
+author: "Ruth Holloway"
+date: "9/16/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+#read in data
+library(readxl)
+East_Germany_SED_Politburo_1949_90 <- read_excel("dataverse_files/East Germany - SED Politburo - 1949-90.xlsx")
+View(East_Germany_SED_Politburo_1949_90)
+
+#select subset of data
+Germany<-East_Germany_SED_Politburo_1949_90[, c('ELITE_ENTERAGE','ELITE_EXITAGE', 'ELITE_RETENURE', 'ELITE_EXITTYPE', 'ELITE_EXITLEADER', 'ELITE_OCCUPATION')]
+GermanElites<-na.omit(Germany)
+
+#visualize relationship between exit age and exit type
+boxplot(ELITE_EXITAGE~ELITE_EXITTYPE, data=GermanElites)
+
+#let's see if the leader in power has any effect
+lm(ELITE_EXITAGE~ELITE_EXITTYPE+ELITE_EXITLEADER, data=GermanElites)
+```
+The relationship between exit type and exit age is clear: median age of elites who
+resigned or died in office is a good bit higher than the median age of those who 
+were demoted or expelled. Those who left under Krenz are a bit older, on average, 
+than those who left under Ulbricht.
