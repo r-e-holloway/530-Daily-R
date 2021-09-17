@@ -1,0 +1,54 @@
+---
+title: "September 17 Daily R"
+author: "Ruth Holloway"
+date: "9/17/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(readxl)
+USSR <- read_excel("Data/USSR - CPSU Politburo - 1922-1991.xlsx")
+View(USSR)
+
+#subset parts of data
+USSRcleaned<-USSR[, c('ELITE_RETENURE','ELITE_EXITTYPE', 'ELITE_EXITFATE', 'ELITE_EXITLEADER', 'ELITE_OCCUPATION', 'ELITE_ETHNICITY')]
+USSRcleaned<-na.omit(USSRcleaned)
+USSRcleaned
+
+lm(ELITE_RETENURE~ELITE_EXITFATE, data=USSRcleaned) #model indicates that exiled elites typically served less time than those who were executed, and that those who were not punished served the longest in office
+
+#recode categorical variables for exit fate as factors
+library(dplyr)
+USSRcleaned$ELITE_EXITFATE <- recode(USSRcleaned$ELITE_EXITFATE, "No Punishment" = 0, "Exile" = 1, "Execution" = 2)
+
+#visualize the exit fates of elites in the USSR
+library(ggplot2)
+ggplot(USSRcleaned, aes(x=ELITE_EXITFATE)) +
+  geom_dotplot() #looks like the majority weren't punished, but that one was exiled and nine were executed
+
+#examine under which leaders an outgoing elite was more likely to be executed
+boxplot(ELITE_EXITFATE~ELITE_EXITLEADER, data=USSRcleaned) #one execution took place under Malenkov, but Stalin executed eight elites and exiled one
+
+```
+
+I'm finding that it's harder to interact meaningfully with categorical and factor 
+data as opposed to numeric, at least in terms of how I've been taught in the past 
+to think about and analyze data. Boxplots are kind of my go to when it comes to 
+looking at ordinal variables, but I'm curious to find more ways that I can 
+understand/analyze/visualize non-numeric observations.
+
+# References
+@data{DVN/QZ9BSA_2019,
+author = {Matthews, Austin S.},
+publisher = {Harvard Dataverse},
+title = {{Authoritarian Ruling Elites Database (ARED)}},
+UNF = {UNF:6:wCE6Fbq4fzjLGf3CGoYYXQ==},
+year = {2019},
+version = {V36},
+doi = {10.7910/DVN/QZ9BSA},
+url = {https://doi.org/10.7910/DVN/QZ9BSA}
+}
