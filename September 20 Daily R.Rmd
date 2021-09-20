@@ -1,0 +1,37 @@
+---
+title: "September 20 Daily R"
+author: "Ruth Holloway"
+date: "9/20/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+#load data
+library(readxl)
+GSS <- read_excel("Data/GSS.xlsx")
+View(GSS)
+
+#clean data
+library(dplyr)
+SocialSurvey<-subset(GSS, select=(-2)) #remove respondent ID
+SocialSurvey$Income <- recode(SocialSurvey$Income, "Far below average" = 1, "Below average" = 2, "Average" = 3, "Above average" = 4, "Far above average" =5) #recode income variable
+SocialSurvey$Income<-as.factor(SocialSurvey$Income) #turn income levels into factors
+
+#look at cleaned data
+View(SocialSurvey)
+
+fit1<-lm(Prestige~Income, data=SocialSurvey) #examine relationship between job pretige and household income at age 16
+summary(fit1) #strong positive relationship that plateaus once income hits above average level
+
+fit2<-lm(Prestige~Income+Children+Income*Children, data=SocialSurvey) #make model looking at relationship between job prestige and income at 16 and number of children < 6 years old as well as interaction
+summary(fit2) #looks like more children under age 6 is negatively associated with job prestige, but that the presence of more children and a higher household income are 
+
+library(margins)
+#examine marginal effects of interaction terms
+margins(fit2) #looks like household income at age 16 is still the best predictor of job prestige
+```
+
