@@ -1,0 +1,58 @@
+---
+title: "September 22 Daily R"
+author: "Ruth Holloway"
+date: "9/22/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+This is day 3 working with this data, and I really want to find a way to show
+all of my relationships of interest on one chart. If my explanatory variables 
+were continuous, this would be a lot easier! Yesterday, I did boxplots for each 
+explanatory variable, but today I'm trying to combine them.
+
+```{r}
+#load data
+library(readxl)
+GSS <- read_excel("Data/GSS.xlsx")
+
+#clean data
+library(dplyr)
+SocialSurvey<-subset(GSS, select=(3:5)) #remove ID and year
+SocialSurvey$Income <- recode(SocialSurvey$Income, "Far below average" = 1, "Below average" = 2, "Average" = 3, "Above average" = 4, "Far above average" =5) #recode income variable
+SocialSurvey$Income<-as.factor(SocialSurvey$Income) #turn income levels into factors
+
+SocialSurvey
+SocialSurvey$Prestige<-as.integer(SocialSurvey$Prestige) #convert type double to integer
+
+#here's the relationships I'm looking at
+lm(Prestige~Income, data=SocialSurvey)
+lm(Prestige~Income+Children+Income*Children, data=SocialSurvey)
+
+SocialSurvey$Child<-ifelse(SocialSurvey$Children>0,"Yes","No") #create binary variable for children
+SS<-na.omit(SocialSurvey) #remove missing values
+SS
+
+#visualize data
+library(ggplot2)
+ggplot(SS, aes(x = Income, y = Prestige))+
+  geom_bar(
+    aes(fill = Prestige), stat = "identity", color = "white",
+    position = position_dodge(0.9)
+    )+
+  facet_wrap(~Child)
+
+```
+So this is my first try showing two categories of data side by side, and I'm not 
+displeased. It could be better. The prestige measure is a bit unclear, but basically 
+the y axis is the "frequency" of certain job prestige levels. It's interesting 
+because there's a negative relationship between the  number of children under 6 
+and job prestige, but in this model, having any children under 6 seems to be 
+related to higher levels of job prestige. If I had to guess, I'd say that it's 
+job prestige that predicts having young children (feeling like one is able to 
+support a family) and not the other way around.
+
+
