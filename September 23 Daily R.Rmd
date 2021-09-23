@@ -1,0 +1,48 @@
+---
+title: "September 23 Daily R"
+author: "Ruth Holloway"
+date: "9/23/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+#load data
+library(readxl)
+GSS <- read_excel("Data/GSS.xlsx")
+
+#clean data
+library(dplyr)
+SocialSurvey<-subset(GSS, select=(3:5)) #remove ID and year
+SocialSurvey$Income <- recode(SocialSurvey$Income, "Far below average" = 1, "Below average" = 2, "Average" = 3, "Above average" = 4, "Far above average" =5) #recode income variable
+SocialSurvey$Income<-as.factor(SocialSurvey$Income) #turn income levels into factors
+
+SocialSurvey
+SocialSurvey$Prestige<-as.integer(SocialSurvey$Prestige) #convert type double to integer
+
+#here's the relationships I'm looking at
+lm(Prestige~Income, data=SocialSurvey)
+lm(Prestige~Income+Children+Income*Children, data=SocialSurvey)
+
+ChildPrestige<-aggregate(SocialSurvey[,1], list(SocialSurvey$Children), mean) #aggregate mean job prestige by number of children
+View(ChildPrestige)
+
+#visualize data
+barplot(Prestige~Group.1, data=ChildPrestige, main = "Average Job Prestige by # of Children <6", xlab="Children")
+
+SocialSurvey$Child<-ifelse(SocialSurvey$Children>0,"Yes","No") #create binary variable for children
+SS<-na.omit(SocialSurvey) #remove missing values
+SS
+
+PrestigeAvg<-aggregate(SS[, 1], list(SS$Income), mean) #aggregate average job prestige by income level
+View(PrestigeAvg)
+
+#visualize data
+barplot(Prestige~Group.1, data=PrestigeAvg, main = "Average Job Prestige by Income", xlab="Income")
+```
+Probably my last day working with this data. I'm a bit frustrated that I couldn't 
+find a good method of side by side (or broken out by the binary variable Child) 
+comparison of effects, but I want to find and play with some new data.
