@@ -55,4 +55,7 @@ related to higher levels of job prestige. If I had to guess, I'd say that it's
 job prestige that predicts having young children (feeling like one is able to 
 support a family) and not the other way around.
 
+#References
+http://www.sthda.com/english/articles/32-r-graphics-essentials/129-visualizing-multivariate-categorical-data/
+
 

@@ -1,0 +1,36 @@
+---
+title: "September 21 Daily R"
+author: "Ruth Holloway"
+date: "9/21/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+#load data
+library(readxl)
+GSS <- read_excel("Data/GSS.xlsx")
+
+#clean data
+library(dplyr)
+SocialSurvey<-subset(GSS, select=(-2)) #remove respondent ID
+SocialSurvey$Income <- recode(SocialSurvey$Income, "Far below average" = 1, "Below average" = 2, "Average" = 3, "Above average" = 4, "Far above average" =5) #recode income variable
+SocialSurvey$Income<-as.factor(SocialSurvey$Income) #turn income levels into factors
+
+SocialSurvey #is 1972 the only year? I really thought that I had a range of 20 years downloaded. weird.
+
+#visualize the relationships that I looked at yesterday (I'll include them below). I'm a fan of boxplots for factor variables but want to find new ways to visualize. I'll work on that tomorrow.
+boxplot(Prestige~Income, data=SocialSurvey)
+boxplot(Prestige~Children, data=SocialSurvey)
+
+fit1<-lm(Prestige~Income, data=SocialSurvey) #examine relationship between job pretige and household income at age 16
+summary(fit1) #strong positive relationship that plateaus once income hits above average level
+
+fit2<-lm(Prestige~Income+Children+Income*Children, data=SocialSurvey) #make model looking at relationship between job prestige and income at 16 and number of children < 6 years old as well as interaction
+summary(fit2) #looks like more children under age 6 is negatively associated with job prestige, but that the presence of more children and a higher household income are 
+
+```
+
