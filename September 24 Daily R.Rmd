@@ -1,0 +1,28 @@
+---
+title: "September 24 Daily R"
+author: "Ruth Holloway"
+date: "9/24/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(MASS)
+data()
+longley #look at longley economic data
+lm(GNP~Employed+Population, data=longley) #create model to look at relationship between GNP, employment, and population size
+
+#this is a really bad graph, but I'm travelling for a wedding, sorry!
+library(ggplot2)
+ggplot(longley) + 
+   geom_jitter(aes(Employed, GNP), colour="blue") + geom_smooth(aes(Employed, GNP), method=lm, se=FALSE) +
+   geom_jitter(aes(Population, GNP), colour="green") + geom_smooth(aes(Population, GNP), method=lm, se=FALSE) +
+   geom_jitter(aes(Employed, GNP), colour="red") + geom_smooth(aes(Employed, GNP), method=loess, se=FALSE) +
+   geom_jitter(aes(Population, GNP), colour="orange") + geom_smooth(aes(Population, GNP), method=loess, se=FALSE)
+   labs(x = "Variable (Employed vs Population", y = "Gross National Product")
+
+```
+
