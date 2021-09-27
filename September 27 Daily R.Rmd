@@ -1,0 +1,36 @@
+---
+title: "September 27 Daily R"
+author: "Ruth Holloway"
+date: "9/27/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(MASS)
+data()
+View(UCBAdmissions)
+library(dplyr)
+
+#have R make a row for each of the frequencies listed
+df <- as.data.frame(UCBAdmissions)
+Berkeley <- df[rep(1:nrow(df), df[,4]),-4] #see references for where I got this code
+Berkeley
+
+#recode binary variables
+Berkeley$Admit <- recode(Berkeley$Admit, "Rejected" = 0, "Admitted" = 1)
+Berkeley$Gender <- recode(Berkeley$Gender, "Male" = 0, "Female" = 1)
+
+lm(Admit~Gender, data=Berkeley) #relationship between gender and admission. looks like females are less likely to get admitted overall
+
+lm(Admit~Dept, data= Berkeley) #relationship between department and admission. selectivity goes up with each successive alphabetic department. 
+
+lm(Gender~Dept, data=Berkeley) #what I think this says is that women are less likely to apply to department B than any other, and are more likely than men to apply to departments C and E (and thus more likely to get rejected due to the larger number of applicants?). I think that if combined with department, the effect of gender on admissions will decrease
+
+lm(Admit~Gender+Dept+Gender*Dept, data=Berkeley) #interaction terms are negative, meaning that the relationship between gender and admission gets weaker when the department to which the student applied is taken into account
+```
+#References
+https://stackoverflow.com/questions/38208529/de-aggregate-reverse-summarise-expand-a-dataset-in-r
