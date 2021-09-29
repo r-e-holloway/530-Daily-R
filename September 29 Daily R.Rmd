@@ -1,0 +1,30 @@
+---
+title: "September 29 Daily R"
+author: "Ruth Holloway"
+date: "9/29/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+install.packages("haven")
+library(haven)
+dat <- read_dta("Data/Democracy Cross-National Data V4.1 09092015.dta")
+stopifnot(length(unique(dat$Nation)) == nrow(dat))
+stopifnot(all(table(dat$Nation) == 1))
+View(dat)
+
+#look at relationship between economic growth from the 1990s to the mid 2000s and whether a country is in Africa
+lm(EconGrowth~Africa, data = dat) #this isn't what I expected to see according to the theory that indicates that democracy and development are linked. The reason I picked this variable is because the third wave of democratization took place in sub-Saharan Africa in the 90s, so I expected to see more economic growth. However, if I were just comparing African countries to other African countries, it's likely that I'd get a different result.
+
+#look at relationship between change in Freedom House ratings between 1980 and 2010 and whetehr a country is African 
+lm(fhchg1980_2010~Africa, data=dat) #this is consistent with the third wave of democratization
+boxplot(fhchg1980_2010~Africa, data=dat) #higher median change in ratings in countries coded as African
+
+#relationship between economic growth and changes in Freedom House ratings
+lm(EconGrowth~fhchg1980_2010, data = dat) #positive relationship between democratic development and economic growth
+```
+
