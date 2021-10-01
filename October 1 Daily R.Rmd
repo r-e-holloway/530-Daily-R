@@ -1,0 +1,35 @@
+---
+title: "September 29 Daily R"
+author: "Ruth Holloway"
+date: "10/1/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(haven)
+dat <- read_dta("Data/Democracy Cross-National Data V4.1 09092015.dta")
+stopifnot(length(unique(dat$Nation)) == nrow(dat))
+stopifnot(all(table(dat$Nation) == 1))
+View(dat)
+
+library(dplyr)
+African <- filter(dat, Africa == 1) #create dataframe containing only African countries
+African
+
+African$FHchange<-African$fhchg1980_2010 #rename variable
+African$DevelopmentChange<-(African$UNDP_HDI2013-African$UNDP_HDI1990) #create variable measuring change in development
+
+lm(EconGrowth~FHchange, data = African) #examine relationship between change in democracy ratings and economic growth
+lm(EconGrowth~DevelopmentChange, data=African) #examine relationship between change in democracy ratings and change in development
+lm(EconGrowth~DevelopmentChange+FHchange+DevelopmentChange*FHchange, data=African) #implement all factors into one model
+ 
+#inspect varibale
+African$DevelopmentChange
+```
+The intercept for DevelopmentChange seemed a bit high, so I looked at the variable 
+and it doesn't quite capture waht I wanted it to (changes over time in development
+ratings).
