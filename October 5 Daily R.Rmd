@@ -1,0 +1,36 @@
+---
+title: "October 5 Daily R"
+author: "Ruth Holloway"
+date: "10/5/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(MASS)
+data()
+snails
+
+A<-snails[c(1:48), c(1:6)]
+B<-snails[c(49:96), c(1:6)]
+
+A$Prop<-A$Deaths/A$N
+B$Prop<-B$Deaths/B$N
+
+A
+B #in both species A and B, the greatest proportion of snail deaths occurred at the lowest humidity and highest temperature after 4 weeks of exposure. However, the difference between mortality rates between those groups is large: 35% of snails assigned to those conditions from species A died, whereas 80% of snails from species B died when assigned to the same conditions.
+
+fitA<-lm(Deaths~Exposure+Rel.Hum+Temp, data=A)
+summary(fitA)
+
+fitB<-lm(Deaths~Exposure+Rel.Hum+Temp, data=B)
+summary(fitB) #relationship between treatment and mortality rate is much higher in species B
+
+fit1<-lm(Deaths~Species+Exposure+Rel.Hum+Temp+Species*Exposure+Species*Rel.Hum+Species*Temp, data=snails) 
+summary(fit1) #best predictor of mortality looks like SpeciesB*Exposure
+
+```
+
