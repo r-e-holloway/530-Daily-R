@@ -1,0 +1,23 @@
+---
+title: "October 4 Daily R"
+author: "Ruth Holloway"
+date: "10/4/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(MASS)
+data()
+snails
+
+lm(Deaths~Species, data=snails)  #two species; B snails more likely to die than A
+
+lm(Deaths~Exposure, data=snails) #exposure level 4 related to highest median snail deaths
+boxplot(Deaths~Exposure, data=snails) #visualize
+```
+I'm interested in seeing the number of snails in group B as compared to group A 
+that received exposure 4. Will check that out tomorrow.
