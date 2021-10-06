@@ -1,0 +1,27 @@
+---
+title: "October 6 Daily R"
+author: "Ruth Holloway"
+date: "10/6/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(MASS)
+data()
+npk
+
+lm(yield~N, data=npk)
+lm(yield~P, data=npk)
+lm(yield~K, data=npk)
+
+fit1<-lm(yield~N+P+K+N*P+N*K+P*K+N*P*K, data=npk)
+summary(fit1) #looks like treatment N (nitrogen) is related to the greatest crop yield, followed by the presences of all three treatments and then the treatment of potassium
+```
+
+I do not know how to visualize this or otherwise clean the data in such a way that 
+I can do more than I already have, which is annoying. Tomorrow I'm going to try 
+and learn some more about what I can do with the data.
