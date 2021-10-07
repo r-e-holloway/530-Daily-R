@@ -1,0 +1,31 @@
+---
+title: "October 7 Daily R"
+author: "Ruth Holloway"
+date: "10/7/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(MASS)
+npk
+
+#I got this code from the R documentation website and want to figure out what it does
+options(contrasts = c("contr.sum", "contr.poly")) #setting a contrast is telling R what to do with categorical variables. contr.sum constrains variables so that they add up to zero. contr.poly is good for ordered variables. I wonder why we're using it here, because nitrogen, phosphorous, and potaassium aren't different orders of the same thing.
+npk.aov <- aov(yield ~ block + N*P*K, npk) #this is an analysis of variance (ANOVA). the aov function fits a model (based on the contrasts we set?) 
+npk.aov #this looks like it's estimating effects, which I didn't mean to do, but I'm already in this deep
+summary(npk.aov) #I wonder why block is a good predictor of yield. isn't the idea generally to apply the same treatment to different blocks in order to compare treatment effects? or is block itself a treatment? 
+coef(npk.aov) 
+```
+
+I went back and looked at the data and the blocks are not the same! I guess I didn't 
+really understand all of the variables in this data when I started working with 
+it. Basically, since differnt blocks apply four treatments with overlap between 
+blocks, they're a good way to estimate the effects of the specific treatments. 
+For instance, block three got treated with nitrogen whereas block four got treated 
+with potassium. They both had one pea plant treated with all three elements, so 
+we know that it isn't causing the variance. Thus, the difference must be because 
+of the varying effects of nitrogen and potassium.
