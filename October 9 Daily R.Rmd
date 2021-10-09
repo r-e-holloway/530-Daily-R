@@ -1,0 +1,30 @@
+---
+title: "October 9 Daily R"
+author: "Ruth Holloway"
+date: "10/9/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(MASS)
+data()
+survey
+
+library(dplyr)
+student.dat<-rename(survey, "W.Span" = Wr.Hnd, "NW.Span" = NW.Hnd, "Writes" = W.Hnd, "Exercise" = Exer, "Measurement" = M.I, "Smokes" = Smoke) #renaming some columns because the names aren't intuitive
+student.dat
+
+student.dat$Writes <- recode(student.dat$Writes, "Left" = 0, "Right" = 1) #recode writing hand variable
+student.dat$Writes <- recode(student.dat$Writes, "None" = 0, "Some" = 1, "Freq" = 2)
+student.dat$Prop<-abs(student.dat$W.Span-student.dat$NW.Span) #create variable measuring difference in hand span
+student.dat$Prop
+  
+lm(Writes~Prop, data=student.dat) #students less likely to be right-handed as difference in hand size increases
+lm(Exercise~Writes+Sex++Smokes+Writes*Sex, data=student.dat) #those who smoke occasionally are less likely to smoke than regular smokers and those who never smoke. those who are right-handed males are less likely to exercise. never smoking is the best predictor of exercise
+
+```
+
