@@ -1,0 +1,35 @@
+---
+title: "October 11 Daily R"
+author: "Ruth Holloway"
+date: "10/11/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(MASS)
+survey
+
+library(dplyr)
+student.dat<-rename(survey, "W.Span" = Wr.Hnd, "NW.Span" = NW.Hnd, "Writes" = W.Hnd, "Exercise" = Exer, "Measurement" = M.I, "Smokes" = Smoke) #renaming some columns because the names aren't intuitive
+student.dat
+
+student.dat$Writes <- recode(student.dat$Writes, "Left" = 0, "Right" = 1) #recode writing hand variable
+student.dat$Exercise <- recode(student.dat$Exercise, "None" = 0, "Some" = 1, "Freq" = 2)
+student.dat$Smokes <- recode(student.dat$Smokes, "Never" = 0, "Occas" = 1, "Regul" = 2)
+
+student.dat<-student.dat[!is.na(student.dat$Smokes), ] #remove missing values
+student.dat<-student.dat[!is.na(student.dat$Pulse), ]
+student.dat<-student.dat[!is.na(student.dat$Writes), ]
+
+fit1<-lm(Pulse~Exercise+Smokes+Writes, data=student.dat)
+summary(fit1)  #those who exercise more frequently have lower blood pressures (-2.965 BPM per each addition level of frequency), as do smokers (marginally), and those who are right-handed (7.298 fewer BPM on average than left-handed individuals)
+
+fit2<-lm(Pulse~Exercise+Smokes+Writes+Exercise*Smokes+Exercise*Writes, data=student.dat)
+summary(fit2) #right-handedness as strongest correlate with lower blood pressure; however, there is an interaction effect between right-handedness and frequency of exercise. On average, right-handed individuals are more likely to exercise frequently and more likely to have lower blood pressure than left-handed individuals. 
+
+```
+
