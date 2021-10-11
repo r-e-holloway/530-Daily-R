@@ -18,7 +18,7 @@ student.dat<-rename(survey, "W.Span" = Wr.Hnd, "NW.Span" = NW.Hnd, "Writes" = W.
 student.dat
 
 student.dat$Writes <- recode(student.dat$Writes, "Left" = 0, "Right" = 1) #recode writing hand variable
-student.dat$Writes <- recode(student.dat$Writes, "None" = 0, "Some" = 1, "Freq" = 2)
+student.dat$Exercise <- recode(student.dat$Exercise, "None" = 0, "Some" = 1, "Freq" = 2)
 
 student.dat<-student.dat[!is.na(student.dat$W.Span), ] #remove missing values
 
