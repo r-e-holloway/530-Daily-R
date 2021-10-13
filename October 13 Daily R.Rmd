@@ -1,0 +1,39 @@
+---
+title: "October 12 Daily R"
+author: "Ruth Holloway"
+date: "10/12/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(MASS)
+survey
+
+library(dplyr)
+student.dat<-rename(survey, "W.Span" = Wr.Hnd, "NW.Span" = NW.Hnd, "Writes" = W.Hnd, "Exercise" = Exer, "Measurement" = M.I, "Smokes" = Smoke) #renaming some columns because the names aren't intuitive
+student.dat
+
+student.dat$Writes <- recode(student.dat$Writes, "Left" = 0, "Right" = 1) #recode writing hand variable
+student.dat$Exercise <- recode(student.dat$Exercise, "None" = 0, "Some" = 1, "Freq" = 2)
+student.dat$Smokes <- recode(student.dat$Smokes, "Never" = 0, "Occas" = 1, "Regul" = 2)
+
+student.dat<-student.dat[!is.na(student.dat$Smokes), ] #remove missing values
+student.dat<-student.dat[!is.na(student.dat$Pulse), ]
+student.dat<-student.dat[!is.na(student.dat$Writes), ]
+
+student.dat$Prop<-abs(student.dat$W.Span-student.dat$NW.Span)
+student.dat<-student.dat[!is.na(student.dat$Prop), ]
+
+#my last day with this data. going to look at a few more relationships
+
+fit1<-lm(Exercise~Writes+Sex+Smokes+Writes*Sex, data=student.dat)
+summary(fit1) #do left handed females who smoke exercise the most? looks like right-handed men also exercise at higher rates. weird.
+
+fit2<-lm(Writes~Prop+Fold+W.Span, data=student.dat)
+summary(fit2) #as difference between hand span increases, left-handedness also increases. folding with neither hand on top is a better indicator of right-handedness than is folding with one's right hand on top. 
+```
+
