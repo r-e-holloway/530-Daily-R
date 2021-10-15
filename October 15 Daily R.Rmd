@@ -1,0 +1,45 @@
+---
+title: "October 15 Daily R.Rmd"
+author: "Ruth Holloway"
+date: "10/15/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(MASS)
+data()
+Formaldehyde
+
+#lets check out the documentation for this data
+?Formaldehyde
+
+#looks like it's a dataframe with two variables and six observations each. I don't really know much about the natural sciences, but it seems like there were six samples of different weights, and then two acids were put on the sameple and the "optical density" (the depth of the resulting purple color) was recorded
+
+#now let's work through the example
+require(stats); require(graphics)
+
+#download and load packages. I think I already have these, but better safe than sorry.
+install.packages(stats)
+library(stats)
+install.packages(graphics)
+library(graphics)
+
+#plot data
+plot(optden ~ carb, data = Formaldehyde,
+     xlab = "Carbohydrate (ml)", ylab = "Optical Density",
+     main = "Formaldehyde data", col = 4, las = 1)
+
+#add visual representation of linear model
+abline(fm1 <- lm(optden ~ carb, data = Formaldehyde))
+
+summary(fm1) #the weight of each sample has a strong positive relation to the resulting color
+
+opar <- par(mfrow = c(2, 2), oma = c(0, 0, 1.1, 0)) #set parameters for graph
+plot(fm1) #plot linear model
+par(opar)
+```
+
