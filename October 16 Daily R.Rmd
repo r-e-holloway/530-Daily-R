@@ -1,0 +1,38 @@
+---
+title: "October 16 Daily R"
+author: "Ruth Holloway"
+date: "10/16/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(MASS)
+data()
+?sleep
+sleep
+
+boxplot(extra~group, data=sleep) #man, do I love boxplots
+
+?road
+road
+
+DF <- data.frame(state=rownames(road), road)
+rownames(DF) <- NULL
+
+DF
+
+fit1 <- lm(deaths ~ temp + drivers + popden, data=DF)
+summary(fit1)
+
+residyfromx <- resid(lm(deaths ~ drivers + popden, data=DF))
+residzfromx <- resid(lm(temp ~ drivers + popden, data=DF))
+fit2 <- lm(residyfromx ~ residzfromx)
+summary(fit2)
+
+coef(fit1)["temp"] == coef(fit2)[2] #don't know why these aren't equal but okay
+```
+
