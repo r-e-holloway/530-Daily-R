@@ -1,0 +1,31 @@
+---
+title: "October 20 Daily R"
+author: "Ruth Holloway"
+date: "10/20/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(dplyr)
+data()
+?swiss
+swiss
+
+lm(Fertility~Education, data=swiss) #for every percetage increase in education, fertility goes down .8624%
+lm(Agriculture~Education, data=swiss) #for every percentage increase in education, percetnage of the male poulation that works in agriculture declines 1.511%
+
+#showing negative relationships between education, fertility, and agriculture
+library(ggplot2)
+library(robustbase)
+ggplot(data=swiss)+
+  geom_point(aes(Education, Agriculture))+
+  geom_smooth(aes(Education, Agriculture), method=lmrob, colour="red", se=FALSE)+
+  geom_point(aes(Education, Fertility), colour="blue")+
+  geom_smooth(aes(Education, Fertility), method=lmrob, colour="orange", se=FALSE)+
+  labs(x="explanatory", y="outcome")
+```
+

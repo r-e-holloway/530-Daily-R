@@ -1,0 +1,33 @@
+---
+title: "October 19 Daily R"
+author: "Ruth Holloway"
+date: "10/19/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(dplyr)
+data()
+?ChickWeight
+ChickWeight
+
+#wow this is a rough looking dataset. tomorrow I will clean it.
+
+Orange #not the same thing :(
+
+?USJudgeRatings
+USJudgeRatings
+
+#fit a linear model
+fit1<-lm(RTEN~FAMI+CFMG+INTG, data=USJudgeRatings)
+summary(fit1) #case flow managing and judicial integrity best predictors of retention
+
+#look at interaction effects
+fit2<-lm(RTEN~FAMI+CFMG+INTG+FAMI*CFMG+CFMG*INTG+INTG*FAMI, data=USJudgeRatings) 
+summary(fit2) #large interaction effect between familiarity of law and caseflow management
+```
+
