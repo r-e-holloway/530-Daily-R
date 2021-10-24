@@ -1,0 +1,35 @@
+---
+title: "October 22 Daily R"
+author: "Ruth Holloway"
+date: "10/23/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(haven)
+CofWar <- read_dta("Data/NMC_5_0.dta")
+View(CofWar)
+
+USA<-subset(CofWar, stateabb=="USA")
+USA
+
+fit1<-lm(irst~pec, data=USA) #look at relationship between iron production and energy consumption
+summary(fit1)
+
+library(ggplot2)
+ggp1<-ggplot(USA, aes(pec, irst))+
+    geom_point()+
+    geom_smooth(color="purple", method=lm, se=FALSE)  
+
+ggp2<-ggplot(USA, aes(pec, irst))+
+    geom_point()+
+    geom_smooth(color="magenta", method=loess, se=FALSE)  
+
+library(gridExtra)
+grid.arrange(ggp1, ggp2) #nice! loess is a better fit
+```
+

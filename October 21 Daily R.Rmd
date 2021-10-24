@@ -1,0 +1,50 @@
+---
+title: "October 21 Daily R"
+author: "Ruth Holloway"
+date: "10/21/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+data()
+?swiss
+swiss
+
+library(dplyr)
+catholic<-subset(swiss, Catholic > 90) #If I were to use just this data, I think I'd be controlling for Catholocism
+
+protestant<-subset(swiss, Catholic < 16)
+
+mixed<-subset(swiss, between(Catholic, 16, 90)) #great function; big fan
+
+cfit<-lm(Infant.Mortality~Fertility, data= catholic)
+summary(cfit)
+
+pfit<-lm(Infant.Mortality~Fertility, data= protestant)
+summary(pfit)
+  
+mfit<-lm(Infant.Mortality~Fertility, data= mixed)
+summary(mfit)
+
+#I should have controlled for fertility
+
+library(ggplot2)
+ggp1 <- ggplot(catholic, aes(Fertility, Infant.Mortality))+
+  geom_point()+
+  geom_smooth(color="dark green", method=lm, se=FALSE)
+ggp2 <- ggplot(protestant, aes(Fertility, Infant.Mortality))+
+  geom_point()+
+  geom_smooth(color="orange", method=lm, se=FALSE)
+ggp3 <- ggplot(mixed, aes(Fertility, Infant.Mortality))+
+  geom_point()+
+  geom_smooth(color="black", method=lm, se=FALSE)
+
+install.packages("gridExtra")
+library(gridExtra)
+grid.arrange(ggp1, ggp2, ggp3)
+```
+
