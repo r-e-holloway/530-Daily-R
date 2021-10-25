@@ -1,0 +1,40 @@
+---
+title: "October 25 Daily R"
+author: "Ruth Holloway"
+date: "10/25/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(haven)
+CofWar <- read_dta("Data/NMC_5_0.dta")
+View(CofWar)
+
+USA<-subset(CofWar, stateabb=="USA")
+CAN<-subset(CofWar, stateabb=="CAN")
+
+library(ggplot2)
+ggp1<-ggplot(USA, aes(tpop, milper))+
+    geom_point()+
+    geom_smooth(color="blue", method=lm, se=FALSE)  
+
+ggp2<-ggplot(CAN, aes(tpop, milper))+
+    geom_point()+
+    geom_smooth(color="red", method=lm, se=FALSE)  
+
+ggp3<-ggplot(USA, aes(tpop, milper))+
+    geom_point()+
+    geom_smooth(color="green", method=loess, se=FALSE)  
+
+ggp4<-ggplot(CAN, aes(tpop, milper))+
+    geom_point()+
+    geom_smooth(color="yellow", method=loess, se=FALSE)  
+
+library(gridExtra)
+grid.arrange(ggp1, ggp2, ggp3, ggp4)
+```
+
