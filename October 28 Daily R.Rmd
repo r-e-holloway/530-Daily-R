@@ -1,0 +1,30 @@
+---
+title: "October 28 Daily R"
+author: "Ruth Holloway"
+date: "10/28/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(haven)
+CofWar <- read_dta("Data/NMC_5_0.dta")
+View(CofWar)
+
+summary(CofWar)
+
+CofWar$prop.urban<-(CofWar$upop/CofWar$tpop)
+CofWar
+
+Y2002<-subset(CofWar, year=="2002")
+nonzero<-Y2002[c(1:738), c(1:12)]
+nonzero<-na.omit(nonzero)
+nonzero
+
+urban.density<-density(nonzero$prop.urban)
+plot(urban.density)
+```
+
