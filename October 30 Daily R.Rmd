@@ -1,0 +1,35 @@
+---
+title: "October 30 Daily R"
+author: "Ruth Holloway"
+date: "10/30/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(haven)
+CofWar <- read_dta("Data/NMC_5_0.dta")
+View(CofWar)
+
+CivilWar<-subset(CofWar, year==c("1863", "1864", "1865"))
+
+CivilWar #why didn't this work?
+
+#I'll work with what I have
+CivilWar<-na.omit(CivilWar)
+CivilWar.no<-subset(CivilWar, milper<200)
+
+CivilWar.no
+lm(milper~year, data=CivilWar.no)
+
+library(ggplot2)
+ggplot(CivilWar.no)+
+  geom_point(aes(year, milper))+
+  geom_smooth(aes(year, milper), method=loess, color="magenta", se=FALSE)
+
+#it thinks that year is a continuous variable. I'll fix that and the other issue tomorrow.
+```
+
