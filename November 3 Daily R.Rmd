@@ -1,0 +1,30 @@
+---
+title: "November 3 Daily R"
+author: "Ruth Holloway"
+date: "11/3/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(haven)
+CofWar <- read_dta("Data/NMC_5_0.dta")
+View(CofWar)
+
+#this didn't work last time
+CivilWar<-subset(CofWar , year == "1863" | year == "1864" | year == "1865")
+
+CivilWar #party
+
+library(zoo)
+as.Date(as.yearqtr(CivilWar$Year))
+CivilWar
+
+Three<-subset(CivilWar , stateabb == "USA" | stateabb == "UKG" | stateabb == "FRN")
+
+boxplot(milper~stateabb, data=Three)
+```
+
