@@ -1,0 +1,23 @@
+---
+title: "November 5 Daily R"
+author: "Ruth Holloway"
+date: "11/5/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+breakfast<-c("leftover cupcake", "clementines", "sheep cheese and toast", "tuna donburi", "avocado toast")
+days<-c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday")
+temperature<-c(39, 46, 46, 45, 36)
+first.meeting<-c("3:00", "1:00", "8:00", "9:00", "12:00")
+
+this.week<-matrix(c(breakfast, temperature, first.meeting), ncol=3)
+rownames(this.week)<-days
+colnames(this.week)<-c("breakfast", "temperature", "first meeting")
+this.week
+```
+
