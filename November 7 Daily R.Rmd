@@ -1,0 +1,50 @@
+---
+title: "November 7 Daily R"
+author: "Ruth Holloway"
+date: "11/7/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+```{r}
+#my code from Nov. 5
+breakfast<-c("leftover cupcake", "clementines", "sheep cheese and toast", "tuna donburi", "avocado toast")
+days<-c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday")
+temperature<-c(39, 46, 46, 45, 36)
+first.meeting<-c("3:00", "1:00", "8:00", "9:00", "12:00")
+
+this.week<-matrix(c(breakfast, temperature, first.meeting), ncol=3)
+rownames(this.week)<-days
+colnames(this.week)<-c("breakfast", "temperature", "first meeting")
+this.week
+
+#code from Nov. 6
+dat<-as.data.frame(this.week)
+dat$rating<-c(1,1,3,5,4) #variable for how good my breakfast was on a scale of 1-5
+dat
+
+strptime(dat$first.meeting, format = "%Y-%m-%d") #convert to time variable
+
+#new code
+breakfast.new<-c("ramen", "leftover pizza")
+days.new<-c("Saturday", "Sunday")
+temperature.new<-c(30, 30)
+first.meeting.new<-c("5:00", "10:30")
+
+this.weekend<-matrix(c(breakfast.new, temperature.new, first.meeting.new), ncol=3)
+rownames(this.weekend)<-days.new
+colnames(this.weekend)<-c("breakfast", "temperature", "first meeting")
+this.weekend
+
+dat.new<-as.data.frame(this.weekend)
+dat.new$rating<-c(4,1) #variable for how good my breakfast was on a scale of 1-5
+dat.new
+
+this.week<-rbind(this.week, this.weekend)
+this.week
+dat<-as.data.frame(this.week)
+dat
+```
+

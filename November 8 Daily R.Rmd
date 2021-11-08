@@ -1,0 +1,65 @@
+---
+title: "November 8 Daily R"
+author: "Ruth Holloway"
+date: "11/8/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+#my code from Nov. 5 (edited)
+breakfast<-c("leftover cupcake", "clementines", "sheep cheese and toast", "tuna donburi", "avocado toast")
+days<-c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday")
+temperature<-c(39, 46, 46, 45, 36)
+first.meeting<-c("3:00", "1:00", "8:00", "9:00", "12:00")
+rating<-c(1,1,3,5,4)
+
+this.week<-matrix(c(breakfast, rating, temperature, first.meeting), ncol=4)
+rownames(this.week)<-days
+colnames(this.week)<-c("breakfast", "rating", "temperature", "first meeting")
+this.week
+
+#code from Nov. 6 (edited)
+###dat<-as.data.frame(this.week)
+###dat$rating<-c(1,1,3,5,4) #variable for how good my breakfast was on a scale of 1-5
+
+###this.week<-as.matrix(dat)
+###this.week
+
+#code from Nov. 7 (edited)
+breakfast.new<-c("ramen", "leftover pizza")
+days.new<-c("Saturday", "Sunday")
+temperature.new<-c(30, 30)
+first.meeting.new<-c("5:00", "10:30")
+rating.new<-c(4,1)
+
+this.weekend<-matrix(c(breakfast.new, rating.new, temperature.new, first.meeting.new), ncol=4)
+rownames(this.weekend)<-days.new
+colnames(this.weekend)<-c("breakfast", "rating", "temperature", "first meeting")
+this.weekend
+
+###dat.new<-as.data.frame(this.weekend)
+###dat.new$rating<-c(4,1) #variable for how good my breakfast was on a scale of 1-5
+###this.weekend<-as.matrix(dat.new)
+###this.weekend
+
+#new code
+this.week<-rbind(this.week, this.weekend)
+this.week
+dat<-as.data.frame(this.week)
+dat
+
+#convert numbers out of character format
+dat$rating<-as.factor(dat$rating)
+dat$rating
+
+dat$temperature<-as.integer(dat$temperature)
+dat
+
+boxplot(rating~temperature, data=dat)
+lm(rating~temperature, data=dat)
+```
+
