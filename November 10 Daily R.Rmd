@@ -1,0 +1,82 @@
+---
+title: "November 10 Daily R"
+author: "Ruth Holloway"
+date: "11/10/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+#my code from Nov. 5 (edited)
+breakfast<-c("leftover cupcake", "clementines", "sheep cheese and toast", "tuna donburi", "avocado toast")
+days<-c("11/1", "11/2", "11/3", "11/4", "11/5")
+temperature<-c(39, 46, 46, 45, 36)
+first.meeting<-c("3:00", "1:00", "8:00", "9:00", "12:00")
+rating<-c(1,1,3,5,4)
+
+this.week<-matrix(c(breakfast, rating, temperature, first.meeting), ncol=4)
+rownames(this.week)<-days
+colnames(this.week)<-c("breakfast", "rating", "temperature", "first meeting")
+this.week
+
+#code from Nov. 6 (edited)
+###dat<-as.data.frame(this.week)
+###dat$rating<-c(1,1,3,5,4) #variable for how good my breakfast was on a scale of 1-5
+
+###this.week<-as.matrix(dat)
+###this.week
+
+#code from Nov. 7 (edited)
+breakfast.new<-c("ramen", "leftover pizza")
+days.new<-c("11/6", "11/7")
+temperature.new<-c(28, 34)
+first.meeting.new<-c("5:00", "10:30")
+rating.new<-c(4,1)
+
+this.weekend<-matrix(c(breakfast.new, rating.new, temperature.new, first.meeting.new), ncol=4)
+rownames(this.weekend)<-days.new
+colnames(this.weekend)<-c("breakfast", "rating", "temperature", "first meeting")
+this.weekend
+
+###dat.new<-as.data.frame(this.weekend)
+###dat.new$rating<-c(4,1) #variable for how good my breakfast was on a scale of 1-5
+###this.weekend<-as.matrix(dat.new)
+###this.weekend
+
+#Nov 8
+this.week<-rbind(this.week, this.weekend)
+this.week
+dat<-as.data.frame(this.week)
+dat
+
+#convert numbers out of character format
+dat$rating<-as.factor(dat$rating)
+dat$rating
+
+dat$temperature<-as.integer(dat$temperature)
+dat
+
+boxplot(rating~temperature, data=dat)
+lm(rating~temperature, data=dat)
+
+#Nov 9
+breakfast.2<-c("avocado and rice", "eggs and toast", "berry smoothie")
+days.2<-c("11/8", "11/9", "11/10")
+temperature.2<-c(43, 41, 41)
+first.meeting.2<-c("12:00", "1:00", "12:00")
+rating.2<-c(4,4,3)
+
+week.2<-matrix(c(breakfast.2, rating.2, temperature.2, first.meeting.2), ncol=4)
+rownames(week.2)<-days.2
+colnames(week.2)<-c("breakfast", "rating", "temperature", "first meeting")
+week.2
+
+breakfast.dat<-rbind(this.week, week.2)
+breakfast.dat
+breakfast.dat<-as.data.frame(breakfast.dat)
+breakfast.dat
+```
+
