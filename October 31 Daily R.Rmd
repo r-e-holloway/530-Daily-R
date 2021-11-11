@@ -1,0 +1,23 @@
+---
+title: "October 31 Daily R"
+author: "Ruth Holloway"
+date: "10/31/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(MASS)
+data()
+ability.cov #what is this? looks weird
+?ability.cov
+
+?genotype
+genotype
+
+lm(Wt~Mother, data=genotype) #rats raised by mother B had the most weight gain, on average. cool.
+```
+
