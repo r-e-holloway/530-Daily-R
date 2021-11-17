@@ -1,0 +1,29 @@
+---
+title: "November 15 Daily R"
+author: "Ruth Holloway"
+date: "11/15/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+breakfast<-c("leftover cupcake", "clementines", "sheep cheese and toast", "tuna donburi", "avocado toast", "ramen", "leftover pizza", "avocado and rice", "eggs and toast", "berry smoothie", "tuna donburi", "egg sandwich", "bagel", "egg sandwich", "tuna donburi")
+days<-c("11/1", "11/2", "11/3", "11/4", "11/5", "11/6", "11/7", "11/8", "11/9", "11/10", "11/11", "11/12", "11/13","11/14", "11/15")
+temperature<-c(39, 46, 46, 45, 36, 28, 34, 43, 41, 41, 39, 36, 39, 36, 39)
+first.meeting<-c("3:00", "1:00", "8:00", "9:00", "12:00", "5:00", "10:30", "12:00", "1:00", "12:00", "11:30", "7:30", "8:30", "9:00", "12:00")
+rating<-c(1, 1, 3, 5, 4, 4, 1, 4, 4, 3, 5, 2, 3, 2, 5)
+feeling<-c(1, 1, 2, 5, 4, 4, 1, 3, 4, 3, 2, 4, 4, 2, 3)
+
+breakfast.dat<-matrix(c(breakfast, rating, temperature, first.meeting, feeling), ncol=5)
+rownames(breakfast.dat)<-days
+colnames(breakfast.dat)<-c("breakfast", "rating", "temperature", "first meeting", "feeling")
+breakfast.dat
+
+breakfast.dat<-as.data.frame(breakfast.dat)
+breakfast.dat
+```
+
+
